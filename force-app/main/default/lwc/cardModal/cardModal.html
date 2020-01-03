@@ -1,0 +1,25 @@
+<!--
+ - Created by dmytrodemchuk on 30.12.2019.
+ -->
+
+<!-- Card Modal -->
+<template>
+    <template if:true={show}>
+        <div class="task-modal" data-id={id}>
+            <div class="task-modal-main">
+                <div class="task-modal-title">
+                    <i class="task-modal-title-icon"></i>
+                    <div>
+                        <div class="task-modal-title-text">{title}</div>
+                        <div>in the list <span class="task-modal-main-type">{type}</span></div>
+                    </div>
+                    <i class="task-modal-close" onclick={closemodal}></i>
+                </div>
+                <div class="task-modal-main-text">
+                    <i class="task-modal-text-icon"></i>
+                    <div>{text}</div>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>
