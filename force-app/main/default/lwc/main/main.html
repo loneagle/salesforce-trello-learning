@@ -17,7 +17,7 @@
                         <div class="main-type" ondragleave={hideAllSupportWrappersInType} ondragover={addToEmptyTypeDragOver}>
                             <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
                                 <div class="card-wrap-background"></div>
-                                <div class="title-col">{listItem.type}</div>
+                                <div class="title-col" title={listItem.type}>{listItem.type}</div>
                                 <div class="add-drop hidden" ondrop={addToTypeDrop} >Add here</div>
                             </div>
                             <template for:each={listItem.data} for:item="item">
@@ -44,7 +44,7 @@
                                 <div class="newTask-wrapper-input hidden">
                                     <textarea class="newTask-area" cols="30" rows="3" placeholder="Add title for a new card"></textarea>
                                     <div class="newTask-wrap">
-                                        <button class="newTask-save">Save</button>
+                                        <button class="newTask-save" onclick={createTask}>Save</button>
                                         <a class="newTask-close" href="#" onclick={showNewTask}></a>
                                         <a class="newTask-other" href="#"></a>
                                     </div>

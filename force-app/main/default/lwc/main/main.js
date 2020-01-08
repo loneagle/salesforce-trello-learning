@@ -3,6 +3,7 @@ import {
   track,
 } from 'lwc';
 import { createRecord } from 'lightning/uiRecordApi';
+import TrelloObj from '@salesforce/schema/Trello__c';
 import getAllTrelloData from '@salesforce/apex/TrelloController.getAllTrelloData';
 import setNewTrelloData from '@salesforce/apex/TrelloController.setNewTrelloData';
 
@@ -11,7 +12,7 @@ const taskFields = {
   type: 'Type__c',
   title: 'Title__c',
   text: 'Text__c',
-  position: 'Trello__position'
+  position: 'Position__c'
 };
 
 export default class main extends LightningElement {
@@ -45,29 +46,20 @@ export default class main extends LightningElement {
     }
   }
 
-  createAccount() {
-    const fields = {};
-    fields[taskFields.name] = this.name;
-    const recordInput = { apiName: ACCOUNT_OBJECT.objectApiName, fields };
+  createTask(e) {
+    const title = e.target.closest('.newTask-wrapper-input').querySelector('.newTask-area').value;
+    const type = e.target.closest('.main-type').querySelector('.title-col').title;
+    const fields = {
+      Title__c: title,
+      Type__c: type,
+    };
+    const recordInput = { apiName: TrelloObj, fields };
     createRecord(recordInput)
-      .then(account => {
-        this.accountId = account.id;
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Success',
-            message: 'Account created',
-            variant: 'success',
-          }),
-        );
+      .then(data => {
+        console.log('success', data);
       })
       .catch(error => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error creating record',
-            message: error.body.message,
-            variant: 'error',
-          }),
-        );
+        console.log('error', error);
       });
   }
 
@@ -103,7 +95,6 @@ export default class main extends LightningElement {
 
   drop(e) {
     e.preventDefault();
-    console.log(e.target.id,e.target.classList, e.currentTarget.classList);
     const dataId = e.dataTransfer.getData("Text");
     const parent = e.target.closest('.main-type');
     parent.insertBefore(this.template.querySelector(`#${dataId}`), parent.querySelector('.newTask-wrapper'));
