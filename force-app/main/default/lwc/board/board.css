@@ -1,0 +1,150 @@
+.hidden {
+    display: none !important;
+}
+
+.main {
+    display: flex;
+    width: 100%;
+    padding: 12px 16px;
+    background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/1150x2048/9951938b6d53449be1cee83ba0fec550/photo-1561407705-4a0acbee7735");
+    background-position: 50%;
+    background-size: cover;
+    min-height: 50vh;
+}
+
+.main > div {
+    flex: 25%;
+}
+
+.main > div:not(:first-child) {
+    padding-left: 5px;
+}
+
+.main > div:not(:last-child) {
+    padding-right: 5px;
+}
+
+.main > div > div {
+    background: #ebecf0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+}
+
+.title-col {
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 10px 10px 0 20px;
+    color: #172b4d;
+}
+
+.newTask {
+    color: #5e6c84;
+    border-radius: 3px;
+    padding: 10px;
+    display: block;
+    margin-top: 5px;
+}
+
+.newTask:hover {
+    text-decoration: none;
+    background-color: rgba(9,30,66,.08);
+    color: #172b4d;
+}
+
+.newTask-wrapper {
+    padding: 0 0 10px;
+}
+
+.newTask-area {
+    border-radius: 3px;
+    border: 0;
+    padding: 10px;
+    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    width: 100%;
+    resize: vertical;
+}
+
+.newTask-wrapper-input > div {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.newTask-save {
+    background-color: #5aac44;
+    box-shadow: none;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    padding: 4px 10px;
+    margin-right: 10px;
+}
+
+.newTask-close {
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.newTask-close:before {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJ0aW1lcyIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLXRpbWVzIGZhLXctMTEiIHJvbGU9ImltZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMzUyIDUxMiI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMjQyLjcyIDI1NmwxMDAuMDctMTAwLjA3YzEyLjI4LTEyLjI4IDEyLjI4LTMyLjE5IDAtNDQuNDhsLTIyLjI0LTIyLjI0Yy0xMi4yOC0xMi4yOC0zMi4xOS0xMi4yOC00NC40OCAwTDE3NiAxODkuMjggNzUuOTMgODkuMjFjLTEyLjI4LTEyLjI4LTMyLjE5LTEyLjI4LTQ0LjQ4IDBMOS4yMSAxMTEuNDVjLTEyLjI4IDEyLjI4LTEyLjI4IDMyLjE5IDAgNDQuNDhMMTA5LjI4IDI1NiA5LjIxIDM1Ni4wN2MtMTIuMjggMTIuMjgtMTIuMjggMzIuMTkgMCA0NC40OGwyMi4yNCAyMi4yNGMxMi4yOCAxMi4yOCAzMi4yIDEyLjI4IDQ0LjQ4IDBMMTc2IDMyMi43MmwxMDAuMDcgMTAwLjA3YzEyLjI4IDEyLjI4IDMyLjIgMTIuMjggNDQuNDggMGwyMi4yNC0yMi4yNGMxMi4yOC0xMi4yOCAxMi4yOC0zMi4xOSAwLTQ0LjQ4TDI0Mi43MiAyNTZ6Ij48L3BhdGg+PC9zdmc+);
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+}
+
+.newTask-other {
+    margin-left: auto;
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.newTask-other:before {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJlbGxpcHNpcy1oIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtZWxsaXBzaXMtaCBmYS13LTE2IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTMyOCAyNTZjMCAzOS44LTMyLjIgNzItNzIgNzJzLTcyLTMyLjItNzItNzIgMzIuMi03MiA3Mi03MiA3MiAzMi4yIDcyIDcyem0xMDQtNzJjLTM5LjggMC03MiAzMi4yLTcyIDcyczMyLjIgNzIgNzIgNzIgNzItMzIuMiA3Mi03Mi0zMi4yLTcyLTcyLTcyem0tMzUyIDBjLTM5LjggMC03MiAzMi4yLTcyIDcyczMyLjIgNzIgNzIgNzIgNzItMzIuMiA3Mi03Mi0zMi4yLTcyLTcyLTcyeiI+PC9wYXRoPjwvc3ZnPg==);
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+}
+
+.main .addNewType .newTask-wrapper {
+    padding: 10px;
+    background-color: hsla(0,0%,100%,.24);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.main .addNewType .newTask-wrapper:hover {
+    background-color: hsla(0,0%,100%,.32);
+    color: white;
+}
+
+.main-type {
+    padding: 0 10px;
+}
+
+.addNewType .newTask-wrapper a {
+    color: white;
+    text-decoration: none;
+}
+
+.title-wrap {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 15px;
+}

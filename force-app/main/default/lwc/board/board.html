@@ -1,0 +1,56 @@
+<!--
+ - Created by dmytrodemchuk on 09.01.2020.
+ -->
+
+<!-- Board -->
+<template>
+    <c-card-modal
+            id={id}
+            onsave={save}
+            show={show}
+            text={text}
+            titlecard={title}
+            type={type}
+            closemodal={closeModal}
+    >
+    </c-card-modal>
+    <template if:true={types}>
+        <div class="main">
+            <template for:each={types} for:item="type">
+                <div key={type.Id}>
+                    <div class="main-type" ondragleave={hideAllSupportWrappersInType} ondragover={addToEmptyTypeDragOver}>
+                        <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
+                            <div class="card-wrap-background"></div>
+                            <div class="title-col" title={type.Name}>{type.Name}</div>
+                            <div class="add-drop hidden" ondrop={addToTypeDrop} >Add here</div>
+                        </div>
+                        <c-card
+                            type={type.Id}
+                        >
+                        </c-card>
+
+                        <div class="newTask-wrapper" id={type.Id}>
+                            <a href="#" class="newTask" data-type={type.Name} onclick={showNewTask}>+ Add task</a>
+                            <div class="newTask-wrapper-input hidden">
+                                <textarea class="newTask-area" cols="30" rows="3" placeholder="Add title for a new card"></textarea>
+                                <div class="newTask-wrap">
+                                    <button class="newTask-save" onclick={createTask}>Save</button>
+                                    <a class="newTask-close" href="#" onclick={showNewTask}></a>
+                                    <a class="newTask-other" href="#"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <div class="addNewType">
+                <div class="newTask-wrapper">
+                    <a href="#" class="newTask">+ Add one more list</a>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template if:true={error}>
+        <p>Error</p>
+    </template>
+</template>

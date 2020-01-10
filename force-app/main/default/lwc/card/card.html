@@ -1,0 +1,28 @@
+<!--
+ - Created by dmytrodemchuk on 10.01.2020.
+ -->
+
+<!-- Card -->
+<template>
+    <template if:true={cardList}>
+        <template for:each={cardList} for:item="item">
+            <div
+                    class="card-wrap"
+                    key={item.Id}
+                    id={item.Id}
+                    draggable="true"
+                    ondragover={allowDrop}
+                    ondragleave={closeSupportWrapper}
+                    ondragstart={dragstart}
+                    ondrop={drop}
+            >
+                <div class="card-wrap-background" onclick={openModal}></div>
+                <div data-id={item.Id} class="card">
+                    <div class="title">{item.Name}</div>
+                    <div class="text">{item.Text__c}</div>
+                </div>
+                <div class="add-drop hidden">Add here</div>
+            </div>
+        </template>
+    </template>
+</template>

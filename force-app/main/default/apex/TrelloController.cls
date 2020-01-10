@@ -4,14 +4,24 @@
 
 public with sharing class TrelloController {
     @AuraEnabled(cacheable=true)
-    public static List<Trello__c> getAllTrelloData() {
-        return [SELECT id, Type__c, Title__c, Text__c FROM Trello__c];
+    public static List<TrelloBoard__c> getAllBoards() {
+        return [SELECT Id, Name FROM TrelloBoard__c];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<TrelloColumn__c> getAllTypesOfBoard(String id) {
+        return [SELECT Id, Name, Order__c FROM TrelloColumn__c WHERE TrelloBoardRel__c = :id];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<TrelloCard__c> getAllCardsOfType(String id) {
+        return [SELECT Id, Name, Text__c, Order__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :id];
     }
 
     @AuraEnabled(cacheable=true)
     public static String setNewTrelloData() {
         Id profileId= userinfo.getProfileId();
-        String profileName=[Select Id,Name from Profile where Id=:profileId].Name;
+        String profileName=[SELECT Id,Name FROM Profile WHERE Id=:profileId].Name;
         return profileName;
     }
 }
