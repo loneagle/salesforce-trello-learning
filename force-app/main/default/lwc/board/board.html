@@ -5,27 +5,26 @@
 <!-- Board -->
 <template>
     <c-card-modal
-            id={id}
-            onsave={save}
             show={show}
-            text={text}
-            titlecard={title}
+            task={task}
             type={type}
-            closemodal={closeModal}
+            onclosemodal={closeModal}
     >
     </c-card-modal>
     <template if:true={types}>
         <div class="main">
             <template for:each={types} for:item="type">
                 <div key={type.Id}>
-                    <div class="main-type" ondragleave={hideAllSupportWrappersInType} ondragover={addToEmptyTypeDragOver}>
+                    <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappersInType} ondragover={addToEmptyTypeDragOver}>
                         <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
                             <div class="card-wrap-background"></div>
-                            <div class="title-col" title={type.Name}>{type.Name}</div>
+                            <div class="title-col" title={type.Name} onclick={editTitleHandler}>{type.Name}</div>
+                            <textarea class="title-col title-col-textarea hidden" title={type.Name} rows="1" onfocusout={editTitleMain} onkeypress={editTitle}>{type.Name}</textarea>
                             <div class="add-drop hidden" ondrop={addToTypeDrop} >Add here</div>
                         </div>
                         <c-card
                             type={type.Id}
+                            onopentaskmodal={openModal}
                         >
                         </c-card>
 
@@ -43,9 +42,14 @@
                     </div>
                 </div>
             </template>
-            <div class="addNewType">
-                <div class="newTask-wrapper">
-                    <a href="#" class="newTask">+ Add one more list</a>
+            <div class="newTask-wrapper newType">
+                <a href="#" class="newTask" onclick={showNewType}>+ Add one more list</a>
+                <div class="newType-input hidden">
+                    <textarea name="newType-area" cols="30" rows="1" placeholder="Enter new name of type"></textarea>
+                    <div class="newTask-wrapper-input">
+                        <button class="newTask-save" onclick={addNewType}>Add list</button>
+                        <a href="#" class="newTask-close" onclick={hideNewType}></a>
+                    </div>
                 </div>
             </div>
         </div>

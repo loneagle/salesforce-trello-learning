@@ -6,9 +6,10 @@ import { LightningElement, api } from "lwc";
 
 export default class CardModal extends LightningElement {
   @api show = false;
-  @api text = '';
-  @api titlecard = '';
+  @api task = {};
   @api type = '';
-  @api id = '';
-  @api closemodal = '';
+
+  closeModal(e) {
+    this.dispatchEvent(new CustomEvent('closemodal'));
+  }
 }

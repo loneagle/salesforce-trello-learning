@@ -5,19 +5,19 @@
 <!-- Card Modal -->
 <template>
     <template if:true={show}>
-        <div class="task-modal" data-id={id}>
+        <div class="task-modal" data-id={task.Id}>
             <div class="task-modal-main">
                 <div class="task-modal-title">
                     <i class="task-modal-title-icon"></i>
                     <div>
-                        <div class="task-modal-title-text">{titlecard}</div>
-                        <div>in the list <span class="task-modal-main-type">{type}</span></div>
+                        <div class="task-modal-title-text">{task.Name}</div>
+                        <div>in the list <span class="task-modal-main-type">{type.Name}</span></div>
                     </div>
-                    <i class="task-modal-close" onclick={closemodal}></i>
+                    <i class="task-modal-close" onclick={closeModal}></i>
                 </div>
                 <div class="task-modal-main-text">
                     <i class="task-modal-text-icon"></i>
-                    <div>{text}</div>
+                    <div>{task.Text__c}</div>
                 </div>
             </div>
         </div>

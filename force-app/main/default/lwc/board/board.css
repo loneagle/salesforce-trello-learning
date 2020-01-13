@@ -119,6 +119,12 @@
     background-repeat: no-repeat;
 }
 
+.newTask-wrapper.newType .newTask {
+    margin-top: 0;
+    background-color: #ebecf033;
+    color: #172b4d;
+}
+
 .main .addNewType .newTask-wrapper {
     padding: 10px;
     background-color: hsla(0,0%,100%,.24);
@@ -147,4 +153,55 @@
 
 .title {
     font-size: 15px;
+}
+
+.add-drop {
+    height: 60px;
+    background-color: hsla(0,0%,100%,.32);
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.newType-input {
+    padding: 5px;
+}
+
+.newTask-wrapper-input {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.newType-input .newTask-save {
+    min-width: 100px;
+}
+
+.newTask-wrapper.newType .newTask-wrapper-input {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.newType-input textarea {
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #172b4d;
+    width: 100%;
+}
+
+.title-col-textarea {
+    background: white;
+    border: 0;
+    border-radius: 3px;
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding-top: 0;
+    margin-top: 10px;
+}
+
+.title-col-textarea:focus {
+    outline: 2px solid #172b4d;
 }

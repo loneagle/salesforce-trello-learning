@@ -25,6 +25,5 @@ export default class main extends LightningElement {
 
   openBoard(e) {
     this.openedBoard = e.target.closest('.boards-cards').dataset.id;
-    console.log(this.openedBoard);
   }
 }

@@ -20,6 +20,10 @@
     left: 0;
 }
 
+.hidden {
+    display: none !important;
+}
+
 .add-drop {
     height: 60px;
     background-color: hsla(0,0%,100%,.32);

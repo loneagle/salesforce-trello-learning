@@ -9,15 +9,16 @@
             <div
                     class="card-wrap"
                     key={item.Id}
-                    id={item.Id}
+                    data-id={item.Id}
                     draggable="true"
                     ondragover={allowDrop}
                     ondragleave={closeSupportWrapper}
                     ondragstart={dragstart}
                     ondrop={drop}
+                    onclick={openModal}
             >
-                <div class="card-wrap-background" onclick={openModal}></div>
-                <div data-id={item.Id} class="card">
+                <div class="card-wrap-background"></div>
+                <div class="card">
                     <div class="title">{item.Name}</div>
                     <div class="text">{item.Text__c}</div>
                 </div>

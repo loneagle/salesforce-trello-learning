@@ -10,6 +10,8 @@ import {
 } from 'lwc';
 
 import getAllTypesOfBoard from '@salesforce/apex/TrelloController.getAllTypesOfBoard';
+import createNewType from '@salesforce/apex/TrelloController.createNewType';
+import updateNewType from '@salesforce/apex/TrelloController.updateNewType';
 
 export default class board extends LightningElement {
     constructor() {
@@ -19,31 +21,21 @@ export default class board extends LightningElement {
 
     @api board = null;
 
-    @track defaultData = [];
-    @track mapOfListValues = [];
     @track show = false;
-    @track id = "";
-    @track type = "";
-    @track title = "";
-    @track text = "";
+    @track task = {};
     @track nameNewTask = "";
     @track typeNewTask = "";
+    @track type = {};
     @track types = [];
-    // @wire(setNewTask, { nameNewTask: '$nameNewTask', typeNewTask: '$typeNewTask'}) newTask;
-
-    loadTypes() {
-        getAllTypesOfBoard({ id: this.board })
-            .then(result => {
-                this.types = result;
-            })
-            .catch(error => {
-                alert('loadTypes' + JSON.stringify(error));
-            });
-    }
-
-    connectedCallback() {
-        this.loadTypes();
-    }
+    @wire (getAllTypesOfBoard, { id: '$board' })
+        fetchedTypes({ error, data }){
+            if (data) {
+                this.types = [...data];
+            }
+            if (error) {
+                console.error('loadTypes' + JSON.stringify(error));
+            }
+        }
 
     outsideAddTaskClick(e) {
         let i = 0;
@@ -54,6 +46,18 @@ export default class board extends LightningElement {
         });
         if (i === 0) {
             this.showNewTask();
+            this.hideNewType();
+        }
+    }
+
+    allowDrop(e) {
+        e.preventDefault();
+        this.template.querySelectorAll('.add-drop').forEach(item => item.classList.add('hidden'));
+
+        if (e.target.closest('.card-wrap')) {
+            e.target.closest('.card-wrap').querySelector('.add-drop').classList.remove('hidden');
+        } else {
+            e.target.closest('.main-type').querySelector('.add-drop').classList.remove('hidden');
         }
     }
 
@@ -73,9 +77,9 @@ export default class board extends LightningElement {
     }
 
     showNewTask(e) {
-        this.template.querySelectorAll('.newTask-wrapper-input').forEach(item => item.classList.add('hidden'));
-        this.template.querySelectorAll('.newTask-wrapper-input textarea').forEach(item => item.value = '');
-        this.template.querySelectorAll('.newTask').forEach(item => item.classList.remove('hidden'));
+        this.template.querySelectorAll('.main-type .newTask-wrapper-input').forEach(item => item.classList.add('hidden'));
+        this.template.querySelectorAll('.main-type .newTask-wrapper-input textarea').forEach(item => item.value = '');
+        this.template.querySelectorAll('.main-type .newTask').forEach(item => item.classList.remove('hidden'));
         if (e) {
             e.currentTarget.parentElement.querySelector('.newTask-wrapper-input').classList.remove('hidden');
             e.currentTarget.classList.add('hidden');
@@ -95,58 +99,75 @@ export default class board extends LightningElement {
         this.hideAllSupportWrappers();
     }
 
-    drop(e) {
-        e.preventDefault();
-        const dataId = e.dataTransfer.getData("Text");
-        const parent = e.target.closest('.main-type');
-        parent.insertBefore(this.template.querySelector(`#${dataId}`), parent.querySelector('.newTask-wrapper'));
-        this.hideAllSupportWrappers();
-    }
-
-    allowDrop(e) {
-        e.preventDefault();
-        this.template.querySelectorAll('.add-drop').forEach(item => item.classList.add('hidden'));
-
-        if (e.target.closest('.card-wrap')) {
-            e.target.closest('.card-wrap').querySelector('.add-drop').classList.remove('hidden');
-        } else {
-            e.target.closest('.main-type').querySelector('.add-drop').classList.remove('hidden');
-        }
-    }
 
     hideAllSupportWrappers() {
         this.template.querySelectorAll('.add-drop').forEach(item => item.classList.add('hidden'));
     }
 
-    closeSupportWrapper(e) {
-        this.hideAllSupportWrappers();
+    showNewType(e) {
+        e.target.closest('.newTask-wrapper.newType').querySelector('.newTask').classList.add('hidden');
+        e.target.closest('.newTask-wrapper.newType').querySelector('.newType-input').classList.remove('hidden');
+    }
 
-        if (e.target.classList[0].contains('newTask')) {
-            this.showNewTask();
-        } else {
-            e.target.closest('.add-drop').classList.add('hidden');
+    addNewType(e) {
+        if (e) {
+            e.preventDefault();
+        }
+        const name = e.target.closest('.newTask-wrapper.newType').querySelector('textarea').value.trim();
+
+        if (name.length > 0) {
+            let newType = { 'sobjectType': 'TrelloColumn__c' };
+            newType.Name = name;
+            newType.TrelloBoardRel__c = this.board;
+            newType.Order__c = this.types.length;
+            createNewType({ newRecord: newType });
+            getAllTypesOfBoard({ id : this.board }).then((res)=> console.log(res)).catch((err) => console.log(err))
         }
     }
 
-    dragstart(e) {
-        e.dataTransfer.setData('text', e.target.id);
-        e.dataTransfer.effectAllowed = 'move';
+    hideNewType(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.template.querySelector('.newType-input').classList.add('hidden');
+        this.template.querySelector('.newType-input textarea').value = '';
+        this.template.querySelector('.newTask-wrapper.newType .newTask').classList.remove('hidden');
     }
 
+    editTitleHandler(e) {
+        e.target.closest('.title-wrap').querySelector('.title-col').classList.add('hidden');
+        e.target.closest('.title-wrap').querySelector('.title-col-textarea').classList.remove('hidden');
+        e.target.closest('.title-wrap').querySelector('.title-col-textarea').select();
+    }
+
+    editTitle(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.editTitleMain(e);
+            e.blur();
+        }
+    }
+
+    editTitleMain(e) {
+        e.target.closest('.title-wrap').querySelector('.title-col').innerHTML = e.target.value;
+        e.target.closest('.title-wrap').querySelector('.title-col').classList.remove('hidden');
+        e.target.classList.add('hidden');
+
+        let updatedType = { 'sobjectType': 'TrelloColumn__c' };
+        updatedType.TrelloBoardRel__c = this.board;
+        updatedType.Id = e.target.closest('.main-type').dataset.id;
+        updatedType.Order__c = 2;
+        updatedType.Name = e.target.value;
+
+        updateNewType({ updatedRecord: updatedType }).then((e) => console.log(e)).catch(e => console.log(e));
+    }
+
+
     openModal(e) {
-        const targetId = e.target.closest('.card-wrap').querySelector('.card').dataset.id;
-
-        const task = this.defaultData.find(item => item.Id === targetId);
-        this.text = task[taskFields.text];
-        this.title = task[taskFields.title];
-        this.id = task[taskFields.id];
-        this.type = task[taskFields.type];
-
-        if (this.show === true) {
-            this.show = false;
-            setTimeout(() => this.show = true, 1);
-        } else
-            this.show = true;
+        this.task = e.detail;
+        this.type = this.types.find(item => item.Id === e.detail.TrelloColumnRel__c);
+        this.show = true;
     }
 
     closeModal() {
