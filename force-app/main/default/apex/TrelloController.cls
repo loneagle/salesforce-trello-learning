@@ -14,20 +14,30 @@ public with sharing class TrelloController {
     }
 
     @AuraEnabled
-    public static String createNewType(TrelloColumn__c newRecord){
+    public static String createNewType(TrelloColumn__c newRecord) {
         insert newRecord;
         return newRecord.Id;
     }
 
     @AuraEnabled
-    public static String updateNewType(TrelloColumn__c updatedRecord){
+    public static void updateType(TrelloColumn__c updatedRecord) {
         update updatedRecord;
-        return updatedRecord.Id;
+    }
+
+    @AuraEnabled
+    public static String updateTask(TrelloCard__c updatedCard) {
+        update updatedCard;
+        return updatedCard.Id;
     }
 
     @AuraEnabled(cacheable=true)
     public static List<TrelloCard__c> getAllCardsOfType(String id) {
         return [SELECT Id, Name, Text__c, Order__c, TrelloColumnRel__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :id];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<TrelloCard__c> getCardById(String id) {
+        return [SELECT Id, Name, Text__c, Order__c, TrelloColumnRel__c FROM TrelloCard__c WHERE Id = :id];
     }
 
     @AuraEnabled(cacheable=true)

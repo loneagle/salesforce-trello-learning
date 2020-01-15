@@ -15,12 +15,12 @@
         <div class="main">
             <template for:each={types} for:item="type">
                 <div key={type.Id}>
-                    <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappersInType} ondragover={addToEmptyTypeDragOver}>
+                    <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappers} ondragover={addToEmptyTypeDragOver}>
                         <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
-                            <div class="card-wrap-background"></div>
-                            <div class="title-col" title={type.Name} onclick={editTitleHandler}>{type.Name}</div>
+                            <div class="card-wrap-background" onclick={editTitleHandler} ondragleave={hideAllSupportWrappers}></div>
+                            <div class="title-col" title={type.Name}>{type.Name}</div>
                             <textarea class="title-col title-col-textarea hidden" title={type.Name} rows="1" onfocusout={editTitleMain} onkeypress={editTitle}>{type.Name}</textarea>
-                            <div class="add-drop hidden" ondrop={addToTypeDrop} >Add here</div>
+                            <div class="add-drop hidden" ondrop={addToTypeDrop}>Add here</div>
                         </div>
                         <c-card
                             type={type.Id}
