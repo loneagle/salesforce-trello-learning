@@ -14,13 +14,14 @@ import getAllTypesOfBoard from '@salesforce/apex/TrelloController.getAllTypesOfB
 import createNewType from '@salesforce/apex/TrelloController.createNewType';
 import updateType from '@salesforce/apex/TrelloController.updateType';
 import getCardById from '@salesforce/apex/TrelloController.getCardById';
-import updateTask from '@salesforce/apex/TrelloController.updateTask';
+import dropTaskToTitle from '@salesforce/apex/TrelloController.dropTaskToTitle';
 import createNewTask from '@salesforce/apex/TrelloController.createNewTask';
 
 export default class board extends LightningElement {
     constructor() {
         super();
         this.template.addEventListener('click', this.outsideAddTaskClick.bind(this));
+        this.template.addEventListener('allcardupdate', this.allCardUpdate.bind(this));
     }
 
     wiredData;
@@ -39,7 +40,7 @@ export default class board extends LightningElement {
 
             if (data) {
                 let types = [...data];
-                this.types = types.sort((a, b) => b.Order__c - a.Order__c);
+                this.types = types.sort((a, b) => a.Order__c - b.Order__c);
             }
             if (error) {
                 console.error('loadTypes' + JSON.stringify(error));
@@ -82,13 +83,6 @@ export default class board extends LightningElement {
                     document.dispatchEvent(new CustomEvent('cardupdate'));
                 })
                 .catch(e => console.error(e))
-        }
-    }
-
-    addToEmptyTypeDragOver(e) {
-        const type = e.target.closest('.main-type');
-        if (type.querySelectorAll('.card').length === 0) {
-            type.querySelector('.add-drop.hidden').classList.remove('hidden');
         }
     }
 
@@ -205,7 +199,7 @@ export default class board extends LightningElement {
                     el.TrelloColumnRel__c = typeId;
                     el.sobjectType = 'TrelloCard__c';
 
-                    updateTask({ updatedCard: el })
+                    dropTaskToTitle({ updatedCard: el })
                         .then(e => {
                             refreshApex(this.wiredData)
                                 .then(() => {
@@ -219,6 +213,10 @@ export default class board extends LightningElement {
         }).catch(e => console.error(e));
 
         this.hideAllSupportWrappers();
+    }
+
+    allCardUpdate() {
+        document.dispatchEvent(new CustomEvent('cardupdate'));
     }
 
     hideAllSupportWrappers(e) {

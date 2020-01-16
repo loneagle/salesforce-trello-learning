@@ -39,7 +39,44 @@ public with sharing class TrelloController {
     }
 
     @AuraEnabled
-    public static String updateTask(TrelloCard__c updatedCard) {
+    public static void dragAndDrop(String dragId, String targetId) {
+        if ((targetId.length() > 0) && (dragId.length() > 0) && (targetId != dragId)) {
+            TrelloCard__c targetCard = [SELECT TrelloColumnRel__c, Order__c FROM TrelloCard__c WHERE Id = :targetId][0];
+            TrelloCard__c dragCard = [SELECT TrelloColumnRel__c, Order__c FROM TrelloCard__c WHERE Id = :dragId][0];
+            List<TrelloCard__c> targetCardList = [SELECT Id, Name, Order__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :targetCard.TrelloColumnRel__c];
+            List<TrelloCard__c> dragCardList = [SELECT Id, Name, Order__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :dragCard.TrelloColumnRel__c];
+
+            for (TrelloCard__c cardListItem : targetCardList) {
+                if (cardListItem.Order__c > targetCard.Order__c) {
+                    cardListItem.Order__c++;
+                    update cardListItem;
+                }
+            }
+
+            for (TrelloCard__c cardListItem : dragCardList) {
+                if (cardListItem.Order__c > dragCard.Order__c) {
+                    cardListItem.Order__c--;
+                    update cardListItem;
+                }
+            }
+
+
+            dragCard.TrelloColumnRel__c = targetCard.TrelloColumnRel__c;
+            dragCard.Order__c = targetCard.Order__c + 1;
+
+            update dragCard;
+        }
+    }
+
+    @AuraEnabled
+    public static String dropTaskToTitle(TrelloCard__c updatedCard) {
+        List<TrelloCard__c> targetCardList = [SELECT Id, Name, Order__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :updatedCard.TrelloColumnRel__c];
+
+        for (TrelloCard__c cardListItem : targetCardList) {
+            cardListItem.Order__c++;
+            update cardListItem;
+        }
+
         update updatedCard;
         return updatedCard.Id;
     }

@@ -11,6 +11,7 @@ import {
 import { refreshApex } from '@salesforce/apex';
 
 import getAllCardsOfType from '@salesforce/apex/TrelloController.getAllCardsOfType';
+import dragAndDrop from '@salesforce/apex/TrelloController.dragAndDrop';
 
 export default class Card extends LightningElement {
     constructor() {
@@ -30,12 +31,23 @@ export default class Card extends LightningElement {
 
             if (data) {
                 let cardList = [...data];
-                this.cardList = cardList.sort((a, b) => b.Order__c - a.Order__c);
+                this.cardList = cardList.sort((a, b) => a.Order__c - b.Order__c);
             }
             if (error) {
                 console.error('loadCards' + JSON.stringify(error));
             }
         }
+
+    allowDrop(e) {
+        e.preventDefault();
+
+        this.hideAllSupportWrappers();
+        if (e.target.closest('.card-wrap')) {
+            e.target.closest('.card-wrap').querySelector('.add-drop').classList.remove('hidden');
+        } else {
+            e.target.closest('.main-type').querySelector('.add-drop').classList.remove('hidden');
+        }
+    }
 
     cardUpdate() {
         refreshApex(this.wiredData);
@@ -48,19 +60,17 @@ export default class Card extends LightningElement {
 
     closeSupportWrapper(e) {
         this.hideAllSupportWrappers();
-
-        if (e.target.classList[0].contains('newTask')) {
-            this.showNewTask();
-        } else {
-            e.target.closest('.add-drop').classList.add('hidden');
-        }
     }
 
     drop(e) {
         e.preventDefault();
         const dataId = e.dataTransfer.getData("Text");
-        const parent = e.target.closest('.main-type');
-        parent.insertBefore(this.template.querySelector(`#${dataId}`), parent.querySelector('.newTask-wrapper'));
+        const typeId = e.target.closest('.card-wrap').dataset.id;
+
+        dragAndDrop({ dragId: dataId, targetId: typeId})
+            .then(() => this.dispatchEvent(new CustomEvent('allcardupdate')))
+            .catch(e => console.error(e));
+
         this.hideAllSupportWrappers();
     }
 

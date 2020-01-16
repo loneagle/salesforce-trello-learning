@@ -15,7 +15,7 @@
         <div class="main">
             <template for:each={types} for:item="type">
                 <div key={type.Id}>
-                    <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappers} ondragover={addToEmptyTypeDragOver}>
+                    <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappers}>
                         <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
                             <div class="card-wrap-background" onclick={editTitleHandler} ondragleave={hideAllSupportWrappers}></div>
                             <div class="title-col" title={type.Name}>{type.Name}</div>
@@ -25,6 +25,7 @@
                         <c-card
                             type={type.Id}
                             onopentaskmodal={openModal}
+                            onallcardupdate={allCardUpdate}
                         >
                         </c-card>
 
