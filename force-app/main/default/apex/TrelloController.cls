@@ -69,7 +69,7 @@ public with sharing class TrelloController {
     }
 
     @AuraEnabled
-    public static String dropTaskToTitle(TrelloCard__c updatedCard) {
+    public static void dropTaskToTitle(TrelloCard__c updatedCard) {
         List<TrelloCard__c> targetCardList = [SELECT Id, Name, Order__c FROM TrelloCard__c WHERE TrelloColumnRel__c = :updatedCard.TrelloColumnRel__c];
 
         for (TrelloCard__c cardListItem : targetCardList) {
@@ -78,7 +78,11 @@ public with sharing class TrelloController {
         }
 
         update updatedCard;
-        return updatedCard.Id;
+    }
+
+    @AuraEnabled
+    public static void updateTask(TrelloCard__c updatedCard) {
+        update updatedCard;
     }
 
     @AuraEnabled(cacheable=true)

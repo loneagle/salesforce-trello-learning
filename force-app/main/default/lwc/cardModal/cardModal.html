@@ -8,16 +8,22 @@
         <div class="task-modal" data-id={task.Id}>
             <div class="task-modal-main">
                 <div class="task-modal-title">
-                    <i class="task-modal-title-icon"></i>
-                    <div>
-                        <div class="task-modal-title-text">{task.Name}</div>
-                        <div>in the list <span class="task-modal-main-type">{type.Name}</span></div>
+                    <div class="task-modal-title-main">
+                        <i class="task-modal-title-icon"></i>
+                        <div class="task-modal-title-area">
+                            <div class="task-modal-title-text" onclick={editCardTitleClick}>{task.Name}</div>
+                            <textarea class="task-modal-title-text hidden" rows="1">{task.Name}</textarea>
+                        </div>
+                        <i class="task-modal-close" onclick={closeModal}></i>
                     </div>
-                    <i class="task-modal-close" onclick={closeModal}></i>
+                    <div class="task-modal-title-sub">in the list <span class="task-modal-main-type">{type.Name}</span></div>
                 </div>
                 <div class="task-modal-main-text">
-                    <i class="task-modal-text-icon"></i>
-                    <div>{task.Text__c}</div>
+                    <div class="task-modal-title-main desc">
+                        <i class="task-modal-text-icon"></i>
+                        <div class="task-modal-title-text">Description</div>
+                    </div>
+                    <textarea placeholder="Add description..." class="description-area">{task.Text__c}</textarea>
                 </div>
             </div>
         </div>

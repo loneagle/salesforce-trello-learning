@@ -48,6 +48,12 @@ export default class board extends LightningElement {
         }
 
     outsideAddTaskClick(e) {
+        if(!('contains' in String.prototype)) {
+            String.prototype.contains = function(str, startIndex) {
+                return -1 !== String.prototype.indexOf.call(this, str, startIndex);
+            };
+        }
+
         let i = 0;
         this.template.querySelectorAll('.newTask-wrapper').forEach(item => {
             if (item.contains(e.target)) {
@@ -184,6 +190,7 @@ export default class board extends LightningElement {
 
     closeModal() {
         this.show = false;
+        this.allCardUpdate();
     }
 
     drop(e) {

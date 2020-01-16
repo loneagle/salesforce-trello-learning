@@ -2,6 +2,10 @@
  * Created by dmytrodemchuk on 30.12.2019.
  */
 
+.hidden {
+    display: none !important;
+}
+
 .task-modal {
     position: absolute;
     top: 0;
@@ -21,12 +25,24 @@
     padding: 20px;
     margin: 10px;
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: #f4f5f7;
+    border-radius: 2px;
 }
 
-.task-modal-title,
-.task-modal-main-text {
+.task-modal-title-main {
     display: flex;
+}
+
+.task-modal-title-sub {
+    padding-left: 30px;
+}
+
+.task-modal-title-sub span {
+    text-decoration: underline;
+}
+
+.task-modal-title-sub span:before {
+    content: ' ';
 }
 
 .task-modal-title-icon {
@@ -43,6 +59,11 @@
     font-size: 20px;
     line-height: 18px;
     font-weight: 600;
+    width: 100%;
+}
+
+.task-modal-title-text.desc {
+    font-size: 16px;
 }
 
 .task-modal-close {
@@ -73,3 +94,30 @@
     margin-top: 25px;
 }
 
+.task-modal-main-text textarea {
+    width: calc(100% - 30px);
+    margin: 10px 0 0 30px;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 12px;
+    background-color: rgba(9,30,66,.04);
+    min-height: 40px;
+    box-shadow: none;
+}
+
+.task-modal-main-text textarea:hover {
+    background-color: rgba(9, 30, 66, .08);
+}
+
+textarea {
+    outline: none;
+}
+
+.task-modal-title-area textarea {
+    padding: 0 20px 0 0;
+    margin: 0;
+    width: 100%;
+    border: none;
+    resize: none;
+    flex-grow: 1;
+}
