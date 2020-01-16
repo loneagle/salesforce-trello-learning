@@ -25,6 +25,20 @@ public with sharing class TrelloController {
     }
 
     @AuraEnabled
+    public static void createNewTask(String name, String trelloColumnRel) {
+        List<TrelloCard__c> len = [SELECT Id FROM TrelloCard__c WHERE TrelloColumnRel__c = :trelloColumnRel];
+
+        TrelloCard__c newCard = new TrelloCard__c(
+                Name = name,
+                Text__c = '',
+                Order__c = len.size(),
+                TrelloColumnRel__c = trelloColumnRel
+        );
+
+        insert newCard;
+    }
+
+    @AuraEnabled
     public static String updateTask(TrelloCard__c updatedCard) {
         update updatedCard;
         return updatedCard.Id;

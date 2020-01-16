@@ -15,6 +15,7 @@ import createNewType from '@salesforce/apex/TrelloController.createNewType';
 import updateType from '@salesforce/apex/TrelloController.updateType';
 import getCardById from '@salesforce/apex/TrelloController.getCardById';
 import updateTask from '@salesforce/apex/TrelloController.updateTask';
+import createNewTask from '@salesforce/apex/TrelloController.createNewTask';
 
 export default class board extends LightningElement {
     constructor() {
@@ -28,8 +29,6 @@ export default class board extends LightningElement {
 
     @track show = false;
     @track task = {};
-    @track nameNewTask = '';
-    @track typeNewTask = '';
     @track type = {};
     @track types = [];
 
@@ -73,10 +72,17 @@ export default class board extends LightningElement {
 
     createTask(e) {
         const title = e.target.closest('.newTask-wrapper-input').querySelector('.newTask-area').value;
-        const type = e.target.closest('.main-type').querySelector('.title-col').title;
+        const type = e.target.closest('.main-type').dataset.id;
 
-        this.nameNewTask = title;
-        this.typeNewTask = type;
+        if (title.length > 0) {
+            createNewTask({ name: title, trelloColumnRel: type })
+                .then(() => {
+                    this.showNewTask();
+                    refreshApex(this.wiredData);
+                    document.dispatchEvent(new CustomEvent('cardupdate'));
+                })
+                .catch(e => console.error(e))
+        }
     }
 
     addToEmptyTypeDragOver(e) {
