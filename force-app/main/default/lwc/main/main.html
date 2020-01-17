@@ -27,9 +27,10 @@
             </template>
         </template>
         <template if:true={openedBoard}>
-            <div>
+            <div class="workplace">
                 <c-board
                     board={openedBoard}
+                    boards={boards}
                 >
                 </c-board>
             </div>

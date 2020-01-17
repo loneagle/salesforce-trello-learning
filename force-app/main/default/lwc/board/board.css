@@ -5,7 +5,7 @@
 .main {
     display: flex;
     width: 100%;
-    padding: 12px 16px;
+    padding: 65px 16px 12px;
     background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/1150x2048/9951938b6d53449be1cee83ba0fec550/photo-1561407705-4a0acbee7735");
     background-position: 50%;
     background-size: cover;
@@ -213,4 +213,122 @@
     width: 100%;
     height: 100%;
     z-index: 1;
+}
+
+.top-panel {
+    width: 100%;
+    padding: 5px;
+    background-color: rgba(0,0,0,.32);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.top-panel > div:first-child {
+    display: flex;
+    position: relative;
+}
+
+.top-panel > div {
+    cursor: pointer;
+}
+
+.top-panel > div:first-child > div:not(:last-child) {
+    margin-right: 5px;
+    height: 40px;
+}
+
+.top-panel-home {
+    height: 40px;
+    width: 40px;
+    padding: 10px;
+    background-color: hsla(0,0%,100%,.3);
+}
+
+.top-panel-home > div {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    border-radius: 3px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJob21lIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtaG9tZSBmYS13LTE4IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDU3NiA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTI4MC4zNyAxNDguMjZMOTYgMzAwLjExVjQ2NGExNiAxNiAwIDAgMCAxNiAxNmwxMTIuMDYtLjI5YTE2IDE2IDAgMCAwIDE1LjkyLTE2VjM2OGExNiAxNiAwIDAgMSAxNi0xNmg2NGExNiAxNiAwIDAgMSAxNiAxNnY5NS42NGExNiAxNiAwIDAgMCAxNiAxNi4wNUw0NjQgNDgwYTE2IDE2IDAgMCAwIDE2LTE2VjMwMEwyOTUuNjcgMTQ4LjI2YTEyLjE5IDEyLjE5IDAgMCAwLTE1LjMgMHpNNTcxLjYgMjUxLjQ3TDQ4OCAxODIuNTZWNDQuMDVhMTIgMTIgMCAwIDAtMTItMTJoLTU2YTEyIDEyIDAgMCAwLTEyIDEydjcyLjYxTDMxOC40NyA0M2E0OCA0OCAwIDAgMC02MSAwTDQuMzQgMjUxLjQ3YTEyIDEyIDAgMCAwLTEuNiAxNi45bDI1LjUgMzFBMTIgMTIgMCAwIDAgNDUuMTUgMzAxbDIzNS4yMi0xOTMuNzRhMTIuMTkgMTIuMTkgMCAwIDEgMTUuMyAwTDUzMC45IDMwMWExMiAxMiAwIDAgMCAxNi45LTEuNmwyNS41LTMxYTEyIDEyIDAgMCAwLTEuNy0xNi45M3oiPjwvcGF0aD48L3N2Zz4=);
+    background-repeat: no-repeat;
+}
+
+.top-panel-boards {
+    background-color: hsla(0,0%,100%,.3);
+    padding: 3px;
+    border-radius: 3px;
+    display: flex;
+}
+
+.top-panel-search {
+    height: 40px;
+}
+
+.top-panel-boards {
+    line-height: 35px;
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.top-panel-boards > div:first-child {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.top-panel-boards > div:first-child:before {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJjb2x1bW5zIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtY29sdW1ucyBmYS13LTE2IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQ2NCAzMkg0OEMyMS40OSAzMiAwIDUzLjQ5IDAgODB2MzUyYzAgMjYuNTEgMjEuNDkgNDggNDggNDhoNDE2YzI2LjUxIDAgNDgtMjEuNDkgNDgtNDhWODBjMC0yNi41MS0yMS40OS00OC00OC00OHpNMjI0IDQxNkg2NFYxNjBoMTYwdjI1NnptMjI0IDBIMjg4VjE2MGgxNjB2MjU2eiI+PC9wYXRoPjwvc3ZnPg==);
+    content: '';
+    display: block;
+    height: 20px;
+    width: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-right: 5px;
+}
+
+.top-panel-select-board {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    padding: 10px;
+    background-color: #FFFFFF;
+}
+
+.top-panel-search {
+    background-color: hsla(0,0%,100%,.3);
+    border: none;
+    border-radius: 3px;
+    padding: 12px 16px;
+    width: 200px;
+    transition-property: width, background-color;
+    transition-duration: .25s;
+    transition-timing-function: linear;
+}
+
+.top-panel-search:focus {
+    background-color: #FFFFFF;
+    width: 300px;
+}
+
+.top-panel-search:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    transform: translate(50%, 50%);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJzZWFyY2giIGNsYXNzPSJzdmctaW5saW5lLS1mYSBmYS1zZWFyY2ggZmEtdy0xNiIgcm9sZT0iaW1nIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik01MDUgNDQyLjdMNDA1LjMgMzQzYy00LjUtNC41LTEwLjYtNy0xNy03SDM3MmMyNy42LTM1LjMgNDQtNzkuNyA0NC0xMjhDNDE2IDkzLjEgMzIyLjkgMCAyMDggMFMwIDkzLjEgMCAyMDhzOTMuMSAyMDggMjA4IDIwOGM0OC4zIDAgOTIuNy0xNi40IDEyOC00NHYxNi4zYzAgNi40IDIuNSAxMi41IDcgMTdsOTkuNyA5OS43YzkuNCA5LjQgMjQuNiA5LjQgMzMuOSAwbDI4LjMtMjguM2M5LjQtOS40IDkuNC0yNC42LjEtMzR6TTIwOCAzMzZjLTcwLjcgMC0xMjgtNTcuMi0xMjgtMTI4IDAtNzAuNyA1Ny4yLTEyOCAxMjgtMTI4IDcwLjcgMCAxMjggNTcuMiAxMjggMTI4IDAgNzAuNy01Ny4yIDEyOC0xMjggMTI4eiI+PC9wYXRoPjwvc3ZnPg==);
+}
+
+.top-panel-select-board > div {
+    margin: 0 1.5% 8px 0;
+    min-height: 70px;
+    border-radius: 3px;
+    background-color: rgba(9,30,66,.08);
+    padding: 10px;
+    cursor: pointer;
+    background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/539x960/e721e4d434329dfa021954439b939617/photo-1561407705-4a0acbee7735.jpg");
 }

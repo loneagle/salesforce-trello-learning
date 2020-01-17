@@ -67,3 +67,7 @@
     word-wrap: break-word;
     color: #FFFFFF;
 }
+
+.workplace {
+    position: relative;
+}

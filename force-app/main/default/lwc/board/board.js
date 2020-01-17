@@ -26,7 +26,8 @@ export default class board extends LightningElement {
 
     wiredData;
 
-    @api board = null;
+    @api boards;
+    @api board;
 
     @track show = false;
     @track task = {};
@@ -64,6 +65,8 @@ export default class board extends LightningElement {
             this.showNewTask();
             this.hideNewType();
         }
+        //Todo event function close modal
+        // if (!top-panel-boards)
     }
 
     allowDrop(e) {
@@ -228,5 +231,9 @@ export default class board extends LightningElement {
 
     hideAllSupportWrappers(e) {
         this.template.querySelectorAll('.add-drop').forEach(item => item.classList.add('hidden'));
+    }
+
+    openBoardSelect(e) {
+        e.target.closest('.top-panel-boards').querySelector('.top-panel-select-board').classList.remove('hidden');
     }
 }

@@ -12,6 +12,24 @@
     >
     </c-card-modal>
     <template if:true={types}>
+        <div class="top-panel">
+            <div>
+                <div class="top-panel-home">
+                    <div></div>
+                </div>
+                <div class="top-panel-boards" onclick={openBoardSelect}>
+                    <div>Boards</div>
+                    <div class="top-panel-select-board hidden">
+                        <template for:each={boards} for:item="itemBoard">
+                            <div key={itemBoard.Id} value={itemBoard.Id} class="board">{itemBoard.Name}</div>
+                        </template>
+                    </div>
+                </div>
+                <input type="text" class="top-panel-search">
+            </div>
+            <a class="top-panel-title"></a>
+            <div class="top-panel-settings"></div>
+        </div>
         <div class="main">
             <template for:each={types} for:item="type">
                 <div key={type.Id}>
