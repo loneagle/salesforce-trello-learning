@@ -24,6 +24,6 @@ export default class main extends LightningElement {
   }
 
   openBoard(e) {
-    this.openedBoard = e.target.closest('.boards-cards').dataset.id;
+    this.openedBoard = this.boards.find(item => item.Id === e.target.closest('.boards-cards').dataset.id);
   }
 }

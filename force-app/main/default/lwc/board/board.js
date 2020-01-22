@@ -16,6 +16,8 @@ import updateType from '@salesforce/apex/TrelloController.updateType';
 import getCardById from '@salesforce/apex/TrelloController.getCardById';
 import dropTaskToTitle from '@salesforce/apex/TrelloController.dropTaskToTitle';
 import createNewTask from '@salesforce/apex/TrelloController.createNewTask';
+import cloneTypeList from '@salesforce/apex/TrelloController.cloneTypeList';
+import deleteType from '@salesforce/apex/TrelloController.deleteType';
 
 export default class board extends LightningElement {
     constructor() {
@@ -34,7 +36,7 @@ export default class board extends LightningElement {
     @track type = {};
     @track types = [];
 
-    @wire (getAllTypesOfBoard, { id: '$board' })
+    @wire (getAllTypesOfBoard, { id: '$board.Id' })
         imperativeWiring(result) {
             this.wiredData = result;
             const { error, data } = result;
@@ -55,18 +57,36 @@ export default class board extends LightningElement {
             };
         }
 
-        let i = 0;
+        let i = 0, j = 0;
         this.template.querySelectorAll('.newTask-wrapper').forEach(item => {
             if (item.contains(e.target)) {
                 i++;
             }
         });
+
+        if (e.target.classList.value === 'new-card') {
+            i++;
+            j--;
+        }
+
         if (i === 0) {
             this.showNewTask();
             this.hideNewType();
         }
-        //Todo event function close modal
-        // if (!top-panel-boards)
+
+        if (!this.template.querySelector('.top-panel-boards').contains(e.target)) {
+            this.closeBoardSelect();
+        }
+
+        this.template.querySelectorAll('.type-options').forEach(item => {
+            if (item.contains(e.target)) {
+                j++;
+            }
+        });
+
+        if (j === 0) {
+            this.closeTypesModal(e);
+        }
     }
 
     allowDrop(e) {
@@ -99,9 +119,10 @@ export default class board extends LightningElement {
         this.template.querySelectorAll('.main-type .newTask-wrapper-input').forEach(item => item.classList.add('hidden'));
         this.template.querySelectorAll('.main-type .newTask-wrapper-input textarea').forEach(item => item.value = '');
         this.template.querySelectorAll('.main-type .newTask').forEach(item => item.classList.remove('hidden'));
+
         if (e) {
-            e.currentTarget.parentElement.querySelector('.newTask-wrapper-input').classList.remove('hidden');
-            e.currentTarget.classList.add('hidden');
+            e.target.closest('.main-type').querySelector('.newTask-wrapper-input').classList.remove('hidden');
+            e.target.closest('.main-type').querySelector('.newTask').classList.add('hidden');
         }
     }
 
@@ -141,11 +162,11 @@ export default class board extends LightningElement {
         const name = e.target.closest('.newTask-wrapper.newType').querySelector('textarea').value.trim();
 
         if (name.length > 0) {
-            let newType = { 'sobjectType': 'TrelloColumn__c' };
-            newType.Name = name;
-            newType.TrelloBoardRel__c = this.board;
-            newType.Order__c = this.types.length;
-            createNewType({ newRecord: newType })
+            createNewType({
+                name: name,
+                order: this.types.length - 1,
+                trelloBoardRel: this.board.Id
+            })
                 .then(() => {
                     refreshApex(this.wiredData);
                     this.hideNewType();
@@ -173,13 +194,10 @@ export default class board extends LightningElement {
         e.target.closest('.title-wrap').querySelector('.title-col').classList.remove('hidden');
         e.target.classList.add('hidden');
 
-        let updatedType = { 'sobjectType': 'TrelloColumn__c' };
-        updatedType.TrelloBoardRel__c = this.board;
-        updatedType.Id = e.target.closest('.main-type').dataset.id;
-        updatedType.Order__c = 2;
-        updatedType.Name = e.target.value;
-
-        updateType({ updatedRecord: updatedType })
+        updateType({
+            id: e.target.closest('.main-type').dataset.id,
+            name: e.target.value,
+        })
             .then((e) => console.info('updateType', e))
             .catch(e => console.error(e));
     }
@@ -235,5 +253,71 @@ export default class board extends LightningElement {
 
     openBoardSelect(e) {
         e.target.closest('.top-panel-boards').querySelector('.top-panel-select-board').classList.remove('hidden');
+    }
+
+    closeBoardSelect() {
+        this.template.querySelector('.top-panel-select-board').classList.add('hidden');
+    }
+
+    openTypesModal(e) {
+        e.target.closest('.type-options').querySelector('.type-options-modal').classList.remove('hidden');
+    }
+
+    closeTypesModal(e) {
+        this.template.querySelectorAll('.type-options-modal').forEach(item => item.classList.add('hidden'));
+
+        if (e) {
+            e.target.closest('.type-options').querySelector('.type-options-modal').classList.remove('hidden');
+        }
+    }
+
+    cloneTypesList(e) {
+        const typeId = e.target.closest('.main-type').dataset.id;
+
+        cloneTypeList({ id: typeId })
+            .then(() => {
+                this.showNewTask();
+                refreshApex(this.wiredData);
+                document.dispatchEvent(new CustomEvent('cardupdate'));
+            })
+            .catch(e => console.error(e))
+    }
+
+    deleteType(e) {
+        const typeId = e.target.closest('.main-type').dataset.id;
+
+        deleteType({ id: typeId })
+            .then(() => {
+                this.showNewTask();
+                refreshApex(this.wiredData);
+                document.dispatchEvent(new CustomEvent('cardupdate'));
+            })
+            .catch(e => console.error(e))
+    }
+
+    moveTypeOpen(e) {
+        e.target.closest('.type-options-modal').querySelector('.type-options-modal-header-title').classList.toggle('hidden');
+        e.target.closest('.type-options-modal').querySelector('.type-options-modal-header-move').classList.toggle('hidden');
+
+        e.target.closest('.type-options-modal').querySelector('.type-options-modal-list').classList.toggle('hidden');
+        e.target.closest('.type-options-modal').querySelector('.type-options-modal-move').classList.toggle('hidden');
+    }
+
+    changeSelect(e) {
+        e.target.closest('.select-wrap').querySelector('.select-wrap-caption-value').innerHTML = e.target.value;
+    }
+
+    moveType(e) {
+        const typeId = e.target.closest('.main-type').dataset.id;
+        const board = e.target.closest('.type-options-modal-move').querySelector('.board-select').value;
+        const order = e.target.closest('.type-options-modal-move').querySelector('.order-select').value;
+
+        updateType({ id: typeId, order: order, trelloBoardRel: board })
+            .then(() => {
+                this.showNewTask();
+                refreshApex(this.wiredData);
+                document.dispatchEvent(new CustomEvent('cardupdate'));
+            })
+            .catch(e => console.error(e))
     }
 }

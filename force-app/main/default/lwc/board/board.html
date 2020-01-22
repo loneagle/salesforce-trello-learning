@@ -35,10 +35,62 @@
                 <div key={type.Id}>
                     <div class="main-type" data-id={type.Id} ondragleave={hideAllSupportWrappers}>
                         <div class="title-wrap" ondragover={allowDrop} ondrop={drop}>
-                            <div class="card-wrap-background" onclick={editTitleHandler} ondragleave={hideAllSupportWrappers}></div>
-                            <div class="title-col" title={type.Name}>{type.Name}</div>
-                            <textarea class="title-col title-col-textarea hidden" title={type.Name} rows="1" onfocusout={editTitleMain} onkeypress={editTitle}>{type.Name}</textarea>
-                            <div class="add-drop hidden" ondrop={addToTypeDrop}>Add here</div>
+                            <div>
+                                <div class="card-wrap-background" onclick={editTitleHandler} ondragleave={hideAllSupportWrappers}></div>
+                                <div class="title-col" title={type.Name}>{type.Name}</div>
+                                <textarea class="title-col title-col-textarea hidden" title={type.Name} rows="1" onfocusout={editTitleMain} onkeypress={editTitle}>{type.Name}</textarea>
+                                <div class="add-drop hidden" ondrop={addToTypeDrop}>Add here</div>
+                            </div>
+                            <div class="type-options" onclick={openTypesModal}>
+                                <div class="type-options-button">...</div>
+                                <div class="type-options-modal hidden">
+                                    <div class="type-options-modal-header">
+                                        <div class="type-options-modal-header-title">List types options</div>
+                                        <div class="type-options-modal-header-move hidden">
+                                            <div class="back" onclick={moveTypeOpen}></div>
+                                            <div>Move list to</div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <ul class="type-options-modal-list">
+                                        <li class="new-card" onclick={showNewTask}>Add new card</li>
+                                        <li onclick={cloneTypesList}>Clone list</li>
+                                        <li onclick={deleteType}>Delete list</li>
+                                        <li onclick={moveTypeOpen}>Move list</li>
+                                    </ul>
+                                    <div class="type-options-modal-move hidden">
+                                        <div>
+                                            <div class="select-wrap">
+                                                <div class="select-wrap-caption">
+                                                    <div class="select-wrap-caption-name">Board</div>
+                                                    <div class="select-wrap-caption-value">{board.Name}</div>
+                                                </div>
+                                                <select class="board-select" onchange={changeSelect}>
+                                                    <template for:each={boards} for:item="itemBoard">
+                                                        <option key={itemBoard.Id} value={itemBoard.Id}>{itemBoard.Name}</option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="select-wrap">
+                                                <div class="select-wrap-caption">
+                                                    <div class="select-wrap-caption-name">Position</div>
+                                                    <div class="select-wrap-caption-value">{type.Order__c}</div>
+                                                </div>
+                                                <select class="order-select" onchange={changeSelect}>
+                                                    <template for:each={types} for:item="typeItem" for:index="index">
+                                                        <option key={typeItem.Id} value={index}>{index}</option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="submit" onclick={moveType}>Move</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <c-card
                             type={type.Id}
