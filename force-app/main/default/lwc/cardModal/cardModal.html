@@ -25,6 +25,19 @@
                     </div>
                     <textarea placeholder="Add description..." class="description-area">{task.Text__c}</textarea>
                 </div>
+                <div class="task-modal-file">
+                    <div class="saved-files-list">
+                        <template for:each={files} for:item="itemFile">
+                            <div key={itemFile.Id} class="saved-files-list-item">
+                                <a href={itemFile.Url__c}>{itemFile.Name}</a>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="task-modal-file-new">
+                        <input type="file" onchange={handleFilesChange}>
+                        <button onclick={handleSave}>Upload file</button>
+                    </div>
+                </div>
             </div>
         </div>
     </template>

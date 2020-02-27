@@ -1,7 +1,6 @@
 /**
  * Created by dmytrodemchuk on 27.12.2019.
  */
-
 public with sharing class TrelloController {
     @AuraEnabled(cacheable=true)
     public static List<TrelloBoard__c> getAllBoards() {
@@ -173,5 +172,41 @@ public with sharing class TrelloController {
 
         TrelloColumn__c deleteType = [SELECT Id FROM TrelloColumn__c WHERE Id = :id][0];
         delete deleteType;
+    }
+
+    @AuraEnabled
+    public static void saveFile(String id, String strFileName, String base64Data) {
+        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
+        System.debug('qwertqwert');
+        basicAuthCallout();
+    }
+
+    public static void basicAuthCallout(){
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint('https://api.dropboxapi.com/2/auth/token/from_oauth1?');
+        req.setMethod('GET');
+
+        req.setHeader('Authorization', 'Basic cHphZHpnc29sZzRxbnl0OmcybWU4Y3YwYWY0MTlzcA==');
+        req.setHeader('Content-type', 'application/json');
+
+        req.setBody(new DropboxAuth('qievr8hamyg6ndck','qomoftv0472git7').toJson());
+
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+        System.debug(res.getBody());
+    }
+
+    class DropboxAuth {
+        public String oauth1_token;
+        public String oauth1_token_secret;
+
+        public DropboxAuth(String oauth1_token, String oauth1_token_secret) {
+            this.oauth1_token = oauth1_token;
+            this.oauth1_token_secret = oauth1_token_secret;
+        }
+
+        public String toJson() {
+            return JSON.serialize(this);
+        }
     }
 }

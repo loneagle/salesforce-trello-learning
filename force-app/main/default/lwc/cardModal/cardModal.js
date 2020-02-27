@@ -2,14 +2,20 @@
  * Created by dmytrodemchuk on 30.12.2019.
  */
 
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, track } from "lwc";
 
 import updateTask from '@salesforce/apex/TrelloController.updateTask';
+import saveFile from '@salesforce/apex/TrelloController.saveFile';
 
 export default class CardModal extends LightningElement {
   @api show = false;
   @api task = {};
   @api type = '';
+
+  @track fileReader;
+  @track fileContents;
+  @track content;
+  @track filesUploaded;
 
   constructor() {
     super();
@@ -70,5 +76,46 @@ export default class CardModal extends LightningElement {
 
     updateTask({ updatedCard: card })
         .then(() => document.dispatchEvent(new CustomEvent('cardupdate')))
+  }
+
+  handleFilesChange(event) {
+    if(event.target.files.length > 0) {
+      this.filesUploaded = event.target.files;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+  handleSave() {
+    if(this.filesUploaded.length > 0) {
+      this.uploadHelper();
+    }
+    else {
+      this.fileName = 'Please select file to upload!!';
+    }
+  }
+
+  uploadHelper() {
+    this.file = this.filesUploaded[0];
+    this.fileReader= new FileReader();
+    this.fileReader.onloadend = (() => {
+      this.fileContents = this.fileReader.result;
+      let base64 = 'base64,';
+      this.content = this.fileContents.indexOf(base64) + base64.length;
+      this.fileContents = this.fileContents.substring(this.content);
+
+      this.saveToFile();
+    });
+
+    this.fileReader.readAsDataURL(this.file);
+  }
+
+  saveToFile() {
+    saveFile({ id: this.task.id, strFileName: this.file.name, base64Data: encodeURIComponent(this.fileContents)})
+      .then(result => {
+        this.fileName = this.fileName + ' - Uploaded Successfully';
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 }

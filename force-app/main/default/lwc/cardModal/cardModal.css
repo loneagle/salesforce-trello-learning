@@ -121,3 +121,34 @@ textarea {
     resize: none;
     flex-grow: 1;
 }
+
+.task-modal-file {
+    padding-left: 30px;
+    margin-top: 10px;
+}
+
+.task-modal-file-new {
+    position: relative;
+}
+
+.task-modal-file-new button {
+    display: block;
+    width: 20%;
+    height: 60px;
+    background-color: #5aac44;
+    box-shadow: none;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.task-modal-file-new input {
+    display: block;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 60px;
+    -webkit-appearance: none;
+    -mos-appearance: none;
+    cursor: pointer;
+}
